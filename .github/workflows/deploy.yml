@@ -24,7 +24,7 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: Deploy to Amazon ECS
+name: Deploy Spring Boot JAR to EC2
 
 on:
   push:
@@ -32,13 +32,10 @@ on:
 
 permissions:
   contents: read
-  packages: write
 
 jobs:
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
     - name: Checkout source
@@ -53,34 +50,26 @@ jobs:
     - name: Build with Maven
       run: mvn clean package -DskipTests
 
-
-    - name: Upload JAR to EC2 via SSH
+    - name: Upload JAR to EC2 via SCP
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
-        source: "target/app.jar"
+        source: "target/myDockerApp-0.0.1-SNAPSHOT.jar"
         target: "~/app.jar"
 
-    - name: Deploy on EC2 via SSH
+    - name: Run Spring Boot JAR on EC2 via SSH
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
         script: |
-          docker rm -f spring-app || true
-          docker rmi spring-app-image || true
-          
-          echo "FROM eclipse-temurin:21-jdk" > Dockerfile
-          echo "WORKDIR /app" >> Dockerfile
-          echo "COPY target/myDockerApp-0.0.1-SNAPSHOT.jar app.jar" >> Dockerfile
-          echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
-          docker build -t ${{ secrets.DOCKER_IMAGE }} .
-          docker run -d -p 8080:8080 --name spring-app \
-            -e DB_HOST=${{secrets.DB_HOST}} \
-            -e DB_USER=${{secrets.DB_USER}} \
-            -e DB_PASS=${{secrets.DB_PASS}} \
-            -e JWT_SECRET=${{secrets.JWT_SECRET}} \
-            ${{ secrets.DOCKER_IMAGE }}
+          pkill -f 'java -jar' || true
+          nohup java -jar app.jar \
+            --DB_HOST=${{ secrets.DB_HOST }} \
+            --DB_USER=${{ secrets.DB_USER }} \
+            --DB_PASS=${{ secrets.DB_PASS }} \
+            --JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            > output.log 2>&1 &
