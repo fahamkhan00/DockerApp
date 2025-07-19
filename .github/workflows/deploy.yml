@@ -49,15 +49,16 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean package -DskipTests
-
+    - name: List files in target folder
+      run: ls -la target/
     - name: Upload JAR to EC2 via SCP
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
-        source: "target/myDockerApp-0.0.1-SNAPSHOT.jar"
-        target: "~/myDockerApp-0.0.1-SNAPSHOT.jar"
+        source: "target/app.jar"
+        target: "~/app.jar"
 
     - name: Run Spring Boot JAR on EC2 via SSH
       uses: appleboy/ssh-action@master
@@ -67,7 +68,7 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         script: |
           pkill -f 'java -jar' || true
-          nohup java -jar myDockerApp-0.0.1-SNAPSHOT.jar \
+          nohup java -jar app.jar \
             --DB_HOST=${{secrets.DB_HOST}} \
             --DB_USER=${{secrets.DB_USER}} \
             --DB_PASS=${{secrets.DB_PASS}} \
