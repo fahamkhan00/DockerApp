@@ -74,6 +74,7 @@ jobs:
           export JWT_SECRET=${{secrets.JWT_SECRET}} 
           nohup java -jar app.jar > output.log 2>&1 &
 
-          sleep 5
-          echo "App started successfully"
+          sleep 3
+          pgrep -f 'java -jar' && echo "App started successfully" || echo "Failed to start app"
+
 
