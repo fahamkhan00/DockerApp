@@ -68,9 +68,8 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         script: |
           pkill -f 'java -jar' || true
-          nohup java -jar ~/app.jar \
-            --DB_HOST=${{secrets.DB_HOST}} \
-            --DB_USER=${{secrets.DB_USER}} \
-            --DB_PASS=${{secrets.DB_PASS}} \
-            --JWT_SECRET=${{secrets.JWT_SECRET}} \
-            > output.log 2>&1 &
+          export DB_HOST=${{secrets.DB_HOST}} 
+          export DB_USER=${{secrets.DB_USER}} 
+          export DB_PASS=${{secrets.DB_PASS}} 
+          export JWT_SECRET=${{secrets.JWT_SECRET}} 
+          nohup java -jar app.jar > output.log 2>&1 &
