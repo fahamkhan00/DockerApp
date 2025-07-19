@@ -36,6 +36,8 @@ public class User {
 	
 	private int containerPort;
 	
+	private String email;
+	
 	private String imageName;
 	
 	private String anyUsername;

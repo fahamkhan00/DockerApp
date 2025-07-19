@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# === Secrets & Config ===
+.env
+application.properties
+.env
+application.yml
+firebase-adminsdk.json
+firebase-service-key.json
+src/main/resources/application.properties

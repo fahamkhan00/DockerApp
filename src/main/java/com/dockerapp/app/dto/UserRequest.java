@@ -14,6 +14,8 @@ public class UserRequest {
 	
 	private Long id;
 	
+	private String email;
+	
 	
 	private String containerId;
 	

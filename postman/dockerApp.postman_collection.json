@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "54d23e37-16f5-40dc-8a7e-004eac96dae9",
+		"name": "dockerApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46715814",
+		"_collection_link": "https://faham-3159612.postman.co/workspace/Faham's-Workspace~8ac74d96-a06f-47fc-8acf-b153b2cfd627/collection/46715814-54d23e37-16f5-40dc-8a7e-004eac96dae9?action=share&source=collection_link&creator=46715814"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/auth/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"faham77\",\n    \"password\": \"faham\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/auth/register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"faham11\",\n    \"email\": \"fahamkhan@n.com\",\n    \"password\": \"faham\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/docker/openjdk",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmYWhhbTAiLCJpYXQiOjE3NTI4MzQ5MTYsImV4cCI6MTc1MjkyMTMxNn0.zkaPXNjY7dg2AFnuoGJANMYF2WwnCRAclkdUkMTKJfzTyh_ZXXCthYHVI3o1Tx76ZZnkJkZpnjPhPlZPAND6vA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"containerId\":\"28892dd938fe\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/docker/openjdk",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"docker",
+						"openjdk"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

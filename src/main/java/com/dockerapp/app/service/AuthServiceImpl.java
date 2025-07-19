@@ -1,8 +1,13 @@
 package com.dockerapp.app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dockerapp.app.config.JwtTokenProvider;
 import com.dockerapp.app.dto.LoginRequest;
 import com.dockerapp.app.dto.RegisterRequest;
 import com.dockerapp.app.dto.ServerResponse;
@@ -14,6 +19,17 @@ public class AuthServiceImpl implements AuthService {
 	
 	@Autowired
 	AppUserRepository containerRepo;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	AuthenticationManager authenticationManager;
+	
+	@Autowired
+	JwtTokenProvider jwtTokenProvider;
+
+
 	
 	@Override
 	public ServerResponse register(RegisterRequest request) {
@@ -38,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
         AppUser user=AppUser.builder()
         		.username(request.getUsername())
         		.email(request.getEmail())
-        		.password(request.getPassword())
+        		.password(passwordEncoder.encode(request.getPassword()))
         		.build();
         containerRepo.save(user);
         
@@ -61,9 +77,14 @@ public class AuthServiceImpl implements AuthService {
 					.build();
 		}
 		
+		Authentication authentication=null;
+		authentication=authenticationManager.authenticate(
+		new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+		
+		
 		return ServerResponse.builder()
 				.responseCode("203")
-				.responseMessage("Register Successful"+request.getUsername())
+				.responseMessage(jwtTokenProvider.generateToken(authentication)+" \n Login Successful: "+request.getUsername())
 				.dockerInfo(null)
 				.build();
 				

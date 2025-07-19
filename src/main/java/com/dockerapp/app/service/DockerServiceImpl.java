@@ -7,13 +7,18 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dockerapp.app.dto.ContainerIdDto;
 import com.dockerapp.app.dto.DockerInfo;
 import com.dockerapp.app.dto.ServerResponse;
 import com.dockerapp.app.dto.UserRequest;
+import com.dockerapp.app.entity.AppUser;
 import com.dockerapp.app.entity.User;
+import com.dockerapp.app.repository.AppUserRepository;
 import com.dockerapp.app.repository.UserRepository;
 import com.dockerapp.app.utils.Utils;
 
@@ -22,11 +27,19 @@ public class DockerServiceImpl implements DockerService {
 	
 	@Autowired
     UserRepository containerRepo;
+	
+	@Autowired
+	AppUserRepository appRepo;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
 
 //    public DockerServiceImpl(UserRepository containerRepo) {
 //        this.containerRepo = containerRepo;
 //    }
 
+	
     @Override
     public ServerResponse createContainerOpenJDk(UserRequest userRequest) {
     	
@@ -70,10 +83,25 @@ public class DockerServiceImpl implements DockerService {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String containerId = reader.readLine().trim();
+            
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username;
 
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails) principal).getUsername(); // here this is usually the `username`
+            } else {
+                username = principal.toString();
+            }
+            
+            AppUser user = appRepo.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            //AppUser userEmail = appRepo.findByEmail(containerId);
             User record = User.builder()
                     .containerId(containerId.substring(0,12))
                     .imageName(imageName)
+                    .email(user.getEmail())
+                    .appUser(user)
                     .anyUsername(userRequest.getAnyUsername())
                     .anyPassword(userRequest.getAnyPassword())
                     .containerPort(hostPort)
