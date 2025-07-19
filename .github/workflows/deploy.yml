@@ -53,14 +53,18 @@ jobs:
     - name: Build with Maven
       run: mvn clean package -DskipTests
 
+    - name: Rename JAR
+      run: mv target/*.jar target/app.jar
+
+
     - name: Upload JAR to EC2 via SSH
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
-        source: "target/*.jar"
-        target: "~/"
+        source: "target/app.jar"
+        target: "~/app.jar"
 
     - name: Deploy on EC2 via SSH
       uses: appleboy/ssh-action@master
@@ -70,7 +74,12 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         script: |
           docker rm -f spring-app || true
-          docker rmi ${{ secrets.DOCKER_IMAGE }} || true
+          docker rmi spring-app-image || true
+          
+          echo "FROM eclipse-temurin:21-jdk" > Dockerfile
+          echo "WORKDIR /app" >> Dockerfile
+          echo "COPY app.jar app.jar" >> Dockerfile
+          echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
           docker build -t ${{ secrets.DOCKER_IMAGE }} .
           docker run -d -p 8080:8080 --name spring-app \
             -e DB_HOST=${{secrets.DB_HOST}} \
