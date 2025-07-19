@@ -73,3 +73,7 @@ jobs:
           export DB_PASS=${{secrets.DB_PASS}} 
           export JWT_SECRET=${{secrets.JWT_SECRET}} 
           nohup java -jar app.jar > output.log 2>&1 &
+
+          sleep 5
+          echo "App started successfully"
+
