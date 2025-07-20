@@ -86,5 +86,5 @@ jobs:
 
             echo "Verifying application health (wait 15s for startup)..."
             sleep 15
-            curl -v -f http://localhost:8080/actuator/health || { echo "Health check failed!"; exit 1; }
+            curl -v -f http://3.6.139.252:8080/actuator/health || { echo "Health check failed!"; exit 1; }
             echo "Deployment successful!"
