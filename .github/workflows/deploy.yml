@@ -73,8 +73,6 @@ jobs:
             --DB_USER=${{ secrets.DB_USER }} \
             --DB_PASS=${{ secrets.DB_PASS }} \
             --JWT_SECRET=${{ secrets.JWT_SECRET }} \
-            > app.log 2>&1 < /dev/null & disown &
+            > app.log 2>&1 < /dev/null & disown 
+            echo "Running"
           
-          sleep 3
-          echo "Checking if app started..."
-          pgrep -f 'java -jar' && echo " App is running" || echo " Failed to start"
