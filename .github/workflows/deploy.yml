@@ -69,7 +69,7 @@ jobs:
 
             echo "Starting app..."
             nohup java -jar ~/app.jar \
-              --DB_HOST =${{ secrets.DB_HOST }} \
+              --DB_HOST=${{ secrets.DB_HOST }} \
               --DB_USER=${{ secrets.DB_USER }} \
               --DB_PASS=${{ secrets.DB_PASS }} \
               --JWT_SECRET=${{ secrets.JWT_SECRET }} \
