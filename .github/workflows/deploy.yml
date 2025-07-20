@@ -12,7 +12,7 @@ env:
 
 jobs:
   build_and_deploy:
-    runs-on: ubuntu-latest # GitHub-hosted runner for build and deployment orchestration
+    runs-on: ubuntu # GitHub-hosted runner for build and deployment orchestration
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -66,7 +66,7 @@ jobs:
               "${{ secrets.JWT_SECRET }}" | sudo sed -i '/^\[Service\]/r /dev/stdin' "${SERVICE_FILE}"
             
             echo "Updated Systemd service file with environment variables."
-            echo "Reloading systemd daemon t
+            echo "Reloading systemd daemon to pick up changes..."
 
       - name: Manage Spring Boot App via Systemd on EC2
         uses: appleboy/ssh-action@v1.0.0
