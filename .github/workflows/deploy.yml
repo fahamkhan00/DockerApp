@@ -68,7 +68,7 @@ jobs:
             pkill -f 'java -jar' || true
 
             echo "Starting app..."
-            nohup java -jar app.jar \
+            nohup java -jar ~app.jar/target/app.jar \
               --DB_HOST=${{ secrets.DB_HOST }} \
               --DB_USER=${{ secrets.DB_USER }} \
               --DB_PASS=${{ secrets.DB_PASS }} \
