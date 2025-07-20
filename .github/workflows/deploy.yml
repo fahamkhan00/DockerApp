@@ -7,8 +7,8 @@ on:
 
 env:
   JAR_FILENAME: 'app.jar'    # Your finalName is app.jar
-  DEPLOY_DIR: '/home/ubuntu/apps/your-spring-boot-app' # Recommended: a dedicated directory for your app on EC2
-  SYSTEMD_SERVICE_NAME: 'your-spring-boot-service' # The name of your systemd service file (e.g., myapp.service)
+  DEPLOY_DIR: '/home/ubuntu/apps/' # Recommended: a dedicated directory for your app on EC2
+  SYSTEMD_SERVICE_NAME: 'app' # The name of your systemd service file (e.g., myapp.service)
 
 jobs:
   build_and_deploy:
