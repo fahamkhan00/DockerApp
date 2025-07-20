@@ -43,7 +43,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           source: "target/${{ env.JAR_FILENAME }}" # Correctly points to target/app.jar
-          target: "${{ env.DEPLOY_DIR }}/${{ env.JAR_FILENAME }}" # Uploads to /home/ubuntu/apps/your-spring-boot-app/app.jar
+          target: "${{ env.DEPLOY_DIR }}/${{ env.JAR_FILENAME }}" # Uploads to /home/ubuntu/apps/app.jar
 
       - name: Update Systemd Service with Environment Variables
         uses: appleboy/ssh-action@v1.0.0
