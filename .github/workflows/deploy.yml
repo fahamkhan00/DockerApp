@@ -55,7 +55,7 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
         source: "target/*.jar"
-        target: "~/app.jar"
+        target: "app.jar"
 
     - name: Run Spring Boot App on EC2
       uses: appleboy/ssh-action@master
@@ -68,7 +68,7 @@ jobs:
             pkill -f 'java -jar' || true
 
             echo "Starting app..."
-            nohup java -jar ~/app.jar \
+            nohup java -jar app.jar \
               --DB_HOST=${{ secrets.DB_HOST }} \
               --DB_USER=${{ secrets.DB_USER }} \
               --DB_PASS=${{ secrets.DB_PASS }} \
