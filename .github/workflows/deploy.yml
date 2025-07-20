@@ -73,7 +73,7 @@ jobs:
             --DB_USER=${{ secrets.DB_USER }} \
             --DB_PASS=${{ secrets.DB_PASS }} \
             --JWT_SECRET=${{ secrets.JWT_SECRET }} \
-            > app.log 2>&1 < /dev/null &
+            > app.log 2>&1 < /dev/null & disown &
           
           sleep 3
           echo "Checking if app started..."
