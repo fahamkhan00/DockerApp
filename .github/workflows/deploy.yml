@@ -24,21 +24,19 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: Deploy Spring Boot JAR to EC2
+name: Deploy Spring Boot App to EC2 (No Docker)
 
 on:
   push:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout source
+    - name: Checkout Code
       uses: actions/checkout@v3
 
     - name: Set up JDK 21
@@ -49,32 +47,34 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean package -DskipTests
-    - name: List files in target folder
-      run: ls -la target/
-    - name: Upload JAR to EC2 via SCP
+
+    - name: Upload JAR to EC2
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
-        source: "target/app.jar"
+        source: "target/*.jar"
         target: "~/app.jar"
 
-    - name: Run Spring Boot JAR on EC2 via SSH
+    - name: Run Spring Boot App on EC2
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
         script: |
+          echo "Stopping previous app if running..."
           pkill -f 'java -jar' || true
-          export DB_HOST=${{secrets.DB_HOST}} 
-          export DB_USER=${{secrets.DB_USER}} 
-          export DB_PASS=${{secrets.DB_PASS}} 
-          export JWT_SECRET=${{secrets.JWT_SECRET}} 
-          nohup java -jar app.jar > output.log 2>&1 &
 
+          echo "Starting app..."
+          nohup java -jar ~/app.jar \
+            --DB_HOST=${{ secrets.DB_HOST }} \
+            --DB_USER=${{ secrets.DB_USER }} \
+            --DB_PASS=${{ secrets.DB_PASS }} \
+            --JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            > app.log 2>&1 < /dev/null &
+          
           sleep 3
-          pgrep -f 'java -jar' && echo "App started successfully" || echo "Failed to start app"
-
-
+          echo "Checking if app started..."
+          pgrep -f 'java -jar' && echo " App is running" || echo " Failed to start"
