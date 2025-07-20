@@ -39,7 +39,7 @@ The application is hosted on an AWS EC2 instance and uses Amazon RDS for MySQL t
 
 ## 📖 API Documentation
 
-- 📘 **Postman Collection**: [Download Collection](postman_collection.json)  
+- 📘 **Postman Collection**: [Download Collection](postman/postman_collection.json)  
 - 📚 **Swagger UI**: [http://3.6.139.252:8080/swagger-ui/index.html](http://http:3.6.139.252:8080/swagger-ui/index.html)
 
 > Make sure your EC2 instance allows port `8080` in the security group, and Swagger is enabled in your Spring Boot app.
