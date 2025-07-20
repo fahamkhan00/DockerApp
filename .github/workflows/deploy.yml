@@ -54,25 +54,19 @@ jobs:
           script: |
             SERVICE_FILE="/etc/systemd/system/${{ env.SYSTEMD_SERVICE_NAME }}.service"
 
-            # Use sed to add/update Environment variables in the [Service] section
-            # This makes sure your credentials are read from Systemd by your app
-            # rather than exposed on the command line.
-            
-            # Remove existing Environment lines to prevent duplicates or old values
+            echo "Removing existing Environment lines from service file..."
             sudo sed -i '/^Environment=/d' "${SERVICE_FILE}"
             
-            # Add new Environment variables. Adjust these to your specific secret names.
-            # Append these lines to the [Service] section.
-            sudo sed -i '/^\[Service\]/a\'$'\n'\
-            'Environment="DB_HOST=${{ secrets.DB_HOST }}"'$'\n'\
-            'Environment="DB_USER=${{ secrets.DB_USER }}"'$'\n'\
-            'Environment="DB_PASS=${{ secrets.DB_PASS }}"'$'\n'\
-            'Environment="JWT_SECRET=${{ secrets.JWT_SECRET }}" \
-            "${SERVICE_FILE}"
-
+            echo "Adding new Environment variables to service file..."
+            # Using printf and then piping to sed is generally more robust for multiline insertions
+            printf '\nEnvironment="DB_HOST=%s"\nEnvironment="DB_USER=%s"\nEnvironment="DB_PASS=%s"\nEnvironment="JWT_SECRET=%s"\n' \
+              "${{ secrets.DB_HOST }}" \
+              "${{ secrets.DB_USER }}" \
+              "${{ secrets.DB_PASS }}" \
+              "${{ secrets.JWT_SECRET }}" | sudo sed -i '/^\[Service\]/r /dev/stdin' "${SERVICE_FILE}"
+            
             echo "Updated Systemd service file with environment variables."
-            echo "Reloading systemd daemon to pick up changes..."
-            sudo systemctl daemon-reload
+            echo "Reloading systemd daemon t
 
       - name: Manage Spring Boot App via Systemd on EC2
         uses: appleboy/ssh-action@v1.0.0
