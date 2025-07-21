@@ -30,8 +30,8 @@ The application is hosted on an AWS EC2 instance and uses Amazon RDS for MySQL t
 
 | Method | Endpoint           | Description         |
 |--------|--------------------|---------------------|
-| POST   | `/api/auth/register` | Register a new user |
-| POST   | `/api/auth/login`    | Login and get token |
+| POST   | `/auth/register` | Register a new user |
+| POST   | `/auth/login`    | Login and get token |
 
 ---
 
