@@ -103,6 +103,15 @@ Or use the included Postman Collection:
 
 ---
 
+<img width="1917" height="1004" alt="cicd" src="https://github.com/user-attachments/assets/a326a82e-265e-4590-84ec-7b83f1b2402c" />
+<img width="1920" height="1048" alt="login" src="https://github.com/user-attachments/assets/d5da28f0-c40e-42f0-a645-9cdb2e841fe5" />
+<img width="1920" height="1048" alt="stopcontainer" src="https://github.com/user-attachments/assets/ea1ec040-a0ee-4fdb-a7d0-fd58844ba943" />
+<img width="1920" height="1048" alt="container" src="https://github.com/user-attachments/assets/9c3e0cec-f1cf-4cf7-964d-ada75a574143" />
+<img width="1920" height="1048" alt="serviceCode" src="https://github.com/user-attachments/assets/6eb56f69-17d1-4a7a-9b43-3183d0758388" />
+<img width="1920" height="1048" alt="renameCode" src="https://github.com/user-attachments/assets/92541f8e-134b-4297-ad4f-3b3a7b1cd432" />
+<img width="1920" height="1048" alt="swagger" src="https://github.com/user-attachments/assets/8ee4b6ff-d45c-49c2-9a76-9dfeb1f324a4" />
+
+
 
 
 
