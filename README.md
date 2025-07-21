@@ -40,7 +40,7 @@ The application is hosted on an AWS EC2 instance and uses Amazon RDS for MySQL t
 ## 📖 API Documentation
 
 - 📘 **Postman Collection**: [Download Collection](postman/dockerApp.postman_collection.json)  
-- 📚 **Swagger UI**: [http://3.6.139.252:8080/swagger-ui/index.html](http://http:3.6.139.252:8080/swagger-ui/index.html)
+- 📚 **Swagger UI**: [Documentation](http://3.111.102.145:8080/swagger-ui/index.html#/)
 
 > Make sure your EC2 instance allows port `8080` in the security group, and Swagger is enabled in your Spring Boot app.
 
@@ -51,8 +51,9 @@ The application is hosted on an AWS EC2 instance and uses Amazon RDS for MySQL t
 
 | Method | Endpoint                  | Description                      |
 |--------|---------------------------|----------------------------------|
-| POST   | `/api/containers/start`   | Start a new Docker container     |
-| POST   | `/api/containers/stop`    | Stop and remove a container      |
+| POST   | `/api/docker/openjdk`     | Start a new jdk Docker container |
+| POST   | `/api/docker/mysql`       | Start the mysql container        |
+| POST   | `/api/docker/stop`        | Stop and remove a container      |
 | GET    | `/api/containers`         | List all containers for a user   |
 
 > 🔐 All endpoints are secured and require a valid JWT token in the `Authorization: Bearer <token>` header.
@@ -71,15 +72,15 @@ This project follows a modular architecture where each layer has a clear respons
 
 ## 🧪 Testing the API
 
-1. Open the Swagger UI: `http://<your-ec2-ip>:8080/swagger-ui/index.html`
+1. Open the Swagger UI: `http://http://3.111.102.145/:8080/swagger-ui/index.html`
 2. Register a user via `/api/auth/register`
 3. Login to get the JWT token via `/api/auth/login`
 4. Authorize Swagger with the token
-5. Test `/api/containers/start`, `/stop`, and `/list` endpoints
+5. Test `/api/docker/openjdk`, `/mysql`,`/stop`, and `/list` endpoints
 
 Or use the included Postman Collection:
 - Import `postman_collection.json` into Postman
-- Set the environment variable `{{baseUrl}}` to `http://<your-ec2-ip>:8080`
+- Set the environment variable `{{baseUrl}}` to `http://3.111.102.145:8080`
 - Run the authentication and container request flows
 
 
